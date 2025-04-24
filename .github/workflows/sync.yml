@@ -44,7 +44,7 @@ jobs:
         git commit -m "Sync files from external repositories"
         git push https://github.com/${{ github.repository }} HEAD:main
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Step 7: Clean up the cloned repositories
     - name: Clean up cloned repositories
