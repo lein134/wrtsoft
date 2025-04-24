@@ -1,0 +1,51 @@
+name: Sync
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # 每天4点 UTC时间触发
+  workflow_dispatch:  # 允许手动触发工作流
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the current repo (目标仓库)
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    # Step 2: Clone the linkease/istore repository
+    - name: Clone linkease/istore repository
+      run: |
+        git clone https://github.com/linkease/istore.git
+
+    # Step 3: Clone the kenzok8/small-package repository
+    - name: Clone kenzok8/small-package repository
+      run: |
+        git clone https://github.com/kenzok8/small-package.git
+
+    # Step 4: Run the shell script to organize files
+    - name: Organize and Copy Files
+      run: |
+        chmod +x diy.sh  # 赋予执行权限
+        ./diy.sh  # 执行脚本
+
+    # Step 5: Clean up old files (if any)
+    - name: Clean up old files (if any)
+      run: |
+        git clean -fdx
+
+    # Step 6: Commit the changes
+    - name: Commit changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add -A
+        git status  # 查看哪些文件被添加
+        git commit -m "Sync files from external repositories"
+        git push origin main
+
+    # Step 7: Clean up the cloned repositories
+    - name: Clean up cloned repositories
+      run: |
+        rm -rf istore small-package
