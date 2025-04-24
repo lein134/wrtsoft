@@ -22,19 +22,16 @@ jobs:
 
     - name: Clean and commit
       run: |
-        # 删除所有.git目录
-        find . -name ".git" -type d -exec rm -rf {} + 2>/dev/null || true
+        # 确保目标目录存在
+        mkdir -p sources/iStore || true
         
-        # 清理历史文件（保留diy.sh和.git）
-        find . -mindepth 1 -maxdepth 1 \
-          -not -name '.git' \
-          -not -name 'diy.sh' \
-          -exec rm -rf {} +
-
-        # 移动新内容
-        mv sources/iStore/* ./
-
-        # 提交变更
+        # 移动新内容（带错误抑制）
+        shopt -s nullglob
+        mv -f sources/iStore/* . 2>/dev/null || true
+        
+        # 强制提交空目录
+        find . -type d -empty -exec touch {}/.keep \;
+        
         git config --global user.name "iStore AutoSync"
         git config --global user.email "autosync@users.noreply.github.com"
         git add .
