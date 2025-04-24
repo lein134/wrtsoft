@@ -5,7 +5,6 @@ set -e
 rm -rf sources
 mkdir -p sources
 
-# 克隆并清理.git
 clone_repo() {
   repo_url=$1
   target_dir=$2
@@ -15,6 +14,7 @@ clone_repo() {
   rm -rf "$target_dir/.git"
 }
 
+# 克隆源仓库
 clone_repo https://github.com/linkease/istore.git sources/istore
 clone_repo https://github.com/kenzok8/small-package.git sources/small-package
 
@@ -39,7 +39,7 @@ mkdir -p ../temp
 # 移动需要保留的目录
 for folder in "${keep_folders[@]}"; do
   if [ -d "$folder" ]; then
-    mv "$folder" ../temp/
+    mv -v "$folder" ../temp/
   fi
 done
 
@@ -48,11 +48,11 @@ cd ..
 rm -rf small-package
 mv temp small-package
 
-# 合并目录
+# 合并目录（强制创建目标路径）
 mkdir -p iStore
-cp -r istore/* iStore/
-cp -r small-package/* iStore/
+cp -rf istore/* iStore/ 2>/dev/null || true
+cp -rf small-package/* iStore/ 2>/dev/null || true
 
 # 最终清理
-cd ..
+cd ../..
 rm -rf sources/{istore,small-package}
