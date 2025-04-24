@@ -27,8 +27,8 @@ jobs:
     # Step 4: Run the shell script to organize files
     - name: Organize and Copy Files
       run: |
-        chmod +x diy,sh  # 赋予执行权限
-        ./diy,sh  # 执行脚本
+        chmod +x diy.sh  # 赋予执行权限
+        ./diy.sh  # 执行脚本
 
     # Step 5: Clean up old files (if any)
     - name: Clean up old files (if any)
