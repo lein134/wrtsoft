@@ -1,4 +1,4 @@
-name: Sync
+name: Sync Files from External Repositories
 
 on:
   schedule:
@@ -27,23 +27,23 @@ jobs:
     # Step 4: Run the shell script to organize files
     - name: Organize and Copy Files
       run: |
-        chmod +x diy.sh  # 赋予执行权限
-        ./diy.sh  # 执行脚本
+        chmod +x diy,sh  # 赋予执行权限
+        ./diy,sh  # 执行脚本
 
     # Step 5: Clean up old files (if any)
     - name: Clean up old files (if any)
       run: |
         git clean -fdx
 
-    # Step 6: Commit the changes
-    - name: Commit changes
+    # Step 6: Commit the changes and push with GITHUB_TOKEN
+    - name: Commit and Push changes
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add -A
         git status  # 查看哪些文件被添加
         git commit -m "Sync files from external repositories"
-        git push origin main
+        git push https://github.com/${{ github.repository }} HEAD:main
 
     # Step 7: Clean up the cloned repositories
     - name: Clean up cloned repositories
