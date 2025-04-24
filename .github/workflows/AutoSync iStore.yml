@@ -15,11 +15,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
 
-    - name: Setup environment
-      run: |
-        mkdir -p sources
-        rm -rf sources/*
-
     - name: Execute sync script
       run: |
         chmod +x diy.sh
@@ -28,9 +23,9 @@ jobs:
     - name: Clean and commit
       run: |
         # 删除所有.git目录
-        find . -name ".git" -type d -exec rm -rf {} + || true
+        find . -name ".git" -type d -exec rm -rf {} + 2>/dev/null || true
         
-        # 清理历史文件
+        # 清理历史文件（保留diy.sh和.git）
         find . -mindepth 1 -maxdepth 1 \
           -not -name '.git' \
           -not -name 'diy.sh' \
