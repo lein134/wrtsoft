@@ -30,7 +30,7 @@ jobs:
     - name: Organize and Copy Files
       run: |
         chmod +x sync_files.sh  # 赋予执行权限
-        .diy.sh  # 执行脚本
+        ./sync_files.sh  # 执行脚本
         echo "Files have been organized and copied into iStore"
 
     # Step 5: Debug: List the files in the 'iStore' directory to verify
